@@ -2,10 +2,10 @@ FROM stpork/bamboo-centos-base
 
 MAINTAINER stpork from Mordor team
 
-ENV BAMBOO_VERSION 		6.2.2
+ENV BAMBOO_VERSION 	6.2.2
 
-ENV BAMBOO_INSTALL 		/opt/atlassian/bamboo
-ENV BAMBOO_HOME 		/var/atlassian/application-data/bamboo
+ENV BAMBOO_INSTALL 	/opt/atlassian/bamboo
+ENV BAMBOO_HOME 	/var/atlassian/application-data/bamboo
 ENV BAMBOO_USER         daemon
 ENV BAMBOO_GROUP        daemon
 
