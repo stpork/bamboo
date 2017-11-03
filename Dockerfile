@@ -1,4 +1,4 @@
-FROM stpork:bamboo-centos-base
+FROM stpork/bamboo-centos-base
 
 MAINTAINER stpork from Mordor team
 
@@ -16,14 +16,14 @@ LABEL io.k8s.description="Atlassian Bamboo"
 LABEL io.k8s.display-name="Bamboo 6.2.2"
 LABEL io.openshift.expose-services="8085:http"
 
-# Install the nginx web server package and clean the yum cache
-RUN set +x 
-RUN mkdir -p ${BAMBOO_INSTALL}
-RUN mkdir -p ${BAMBOO_HOME}
-RUN curl -L --silent ${BAMBOO_URL} | tar -xz --strip-components=1 -C "$BAMBOO_INSTALL"
-RUN echo -e "\nbamboo.home=$BAMBOO_HOME" >> "${BAMBOO_INSTALL}/atlassian-bamboo/WEB-INF/classes/bamboo-init.properties"
-RUN chown -R ${BAMBOO_USER}:${BAMBOO_GROUP} ${BAMBOO_INSTALL} 
-RUN chown -R ${BAMBOO_USER}:${BAMBOO_GROUP} ${BAMBOO_HOME} 
+USER root
+
+RUN mkdir -p ${BAMBOO_INSTALL} \
+    && mkdir -p ${BAMBOO_HOME}  \
+    && curl -L --silent ${BAMBOO_URL} | tar -xz --strip-components=1 -C "$BAMBOO_INSTALL" \
+    && echo -e "\nbamboo.home=$BAMBOO_HOME" >> "${BAMBOO_INSTALL}/atlassian-bamboo/WEB-INF/classes/bamboo-init.properties" \
+    && chown -R ${BAMBOO_USER}:${BAMBOO_GROUP} ${BAMBOO_INSTALL} \
+    && chown -R ${BAMBOO_USER}:${BAMBOO_GROUP} ${BAMBOO_HOME}  
 
 USER ${BAMBOO_USER}:${BAMBOO_GROUP}
 
