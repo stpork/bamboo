@@ -36,5 +36,5 @@ WORKDIR ${BAMBOO_HOME}
 
 COPY entrypoint.sh /entrypoint.sh
 
-CMD ["/entrypoint.sh"]
+CMD ["/entrypoint.sh", "-fg"]
 ENTRYPOINT ["/sbin/tini", "--"]
