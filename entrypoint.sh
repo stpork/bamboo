@@ -40,5 +40,5 @@ if [ "${UID}" -eq 0 ]; then
     # Now drop privileges
     exec su -s /bin/bash "${BAMBOO_USER}" -c "${BAMBOO_INSTALL}/bin/start-bamboo.sh ${ARGS}"
 else
-    exec "${BAMBOO_INSTALL}/bin/start-bamboo.sh" ${ARGS}
+    exec ${BAMBOO_INSTALL}/bin/start-bamboo.sh ${ARGS}
 fi

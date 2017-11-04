@@ -1,4 +1,4 @@
-IMAGE_NAME = bamboo-centos
+IMAGE_NAME = bamboo
 
 .PHONY: build
 build:
