@@ -3,10 +3,10 @@ FROM stpork/bamboo-centos-base
 MAINTAINER stpork from Mordor team
 
 ENV BAMBOO_VERSION=6.2.2 \
-&& BAMBOO_INSTALL=/opt/atlassian/bamboo \
-&& BAMBOO_HOME=/var/atlassian/application-data/bamboo \
-&& BAMBOO_USER=daemon \
-&& BAMBOO_GROUP=daemon
+BAMBOO_INSTALL=/opt/atlassian/bamboo \
+BAMBOO_HOME=/var/atlassian/application-data/bamboo \
+BAMBOO_USER=daemon \
+BAMBOO_GROUP=daemon
 
 ARG BAMBOO_URL=http://www.atlassian.com/software/bamboo/downloads/binary/atlassian-bamboo-${BAMBOO_VERSION}.tar.gz
 ARG M2_URL=https://bitbucket.org/stpork/bamboo-agent/downloads/settings.xml
@@ -19,7 +19,7 @@ LABEL io.openshift.expose-services="8085:http"
 USER root
 
 RUN mkdir -p ${BAMBOO_INSTALL} \
-&& mkdir -p ${BAMBOO_HOME}  \
+&& mkdir -p ${BAMBOO_HOME} \
 && curl -L --silent ${BAMBOO_URL} | tar -xz --strip-components=1 -C "$BAMBOO_INSTALL" \
 && echo -e "\nbamboo.home=$BAMBOO_HOME" >> "${BAMBOO_INSTALL}/atlassian-bamboo/WEB-INF/classes/bamboo-init.properties" \
 && chown -R ${BAMBOO_USER}:${BAMBOO_GROUP} ${BAMBOO_INSTALL} \
