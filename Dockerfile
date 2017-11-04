@@ -19,16 +19,11 @@ LABEL io.openshift.expose-services="8085:http"
 USER root
 
 RUN mkdir -p ${BAMBOO_INSTALL} \
-    && mkdir -p ${BAMBOO_HOME}  \
-    && curl -L --silent ${BAMBOO_URL} | tar -xz --strip-components=1 -C "$BAMBOO_INSTALL" \
-    && mkdir -p ${HOME} \
-    && mkdir -p ${HOME}/.m2 \
-    && curl -o ${HOME}/.m2/settings.xml -L --silent ${M2_URL} \
-    && echo -e "\nbamboo.home=$BAMBOO_HOME" >> "${BAMBOO_INSTALL}/atlassian-bamboo/WEB-INF/classes/bamboo-init.properties" \
-    && chown -R ${BAMBOO_USER}:${BAMBOO_GROUP} ${BAMBOO_INSTALL} \
-    && chmod -R 777 ${BAMBOO_INSTALL} \
-    && chown -R ${BAMBOO_USER}:${BAMBOO_GROUP} ${BAMBOO_HOME} \
-    && chmod -R 777 ${TOOL_INSTALL}
+&& mkdir -p ${BAMBOO_HOME}  \
+&& curl -L --silent ${BAMBOO_URL} | tar -xz --strip-components=1 -C "$BAMBOO_INSTALL" \
+&& echo -e "\nbamboo.home=$BAMBOO_HOME" >> "${BAMBOO_INSTALL}/atlassian-bamboo/WEB-INF/classes/bamboo-init.properties" \
+&& chown -R ${BAMBOO_USER}:${BAMBOO_GROUP} ${BAMBOO_INSTALL} \
+&& chmod -R 777 ${BAMBOO_INSTALL} 
 
 USER ${BAMBOO_USER}:${BAMBOO_GROUP}
 
