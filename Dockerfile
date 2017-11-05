@@ -6,7 +6,6 @@ ENV BAMBOO_VERSION=6.2.2 \
 BAMBOO_INSTALL=/opt/atlassian/bamboo \
 BAMBOO_HOME=/var/atlassian/application-data/bamboo
 
-# Set the labels that are used for OpenShift to describe the builder image.
 LABEL io.k8s.description="Atlassian Bamboo"
 LABEL io.k8s.display-name="Bamboo ${BAMBOO_VERSION}"
 LABEL io.openshift.expose-services="8085:http, 54663:tcp"
