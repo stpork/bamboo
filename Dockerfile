@@ -19,7 +19,9 @@ RUN BAMBOO_URL=http://www.atlassian.com/software/bamboo/downloads/binary/atlassi
 && curl -fsSL ${BAMBOO_URL} | tar -xz --strip-components=1 -C "$BAMBOO_INSTALL" \
 && echo -e "\nbamboo.home=$BAMBOO_HOME" >> "${BAMBOO_INSTALL}/atlassian-bamboo/WEB-INF/classes/bamboo-init.properties" \
 && chown -R ${RUN_USER}:${RUN_GROUP} ${BAMBOO_INSTALL} \
-&& chmod -R 777 ${BAMBOO_INSTALL}
+&& chmod -R 777 ${BAMBOO_INSTALL} \
+&& chown -R ${RUN_USER}:${RUN_GROUP} ${BAMBOO_HOME} \
+&& chmod -R 777 ${BAMBOO_HOME}
 
 USER ${RUN_USER}:${RUN_GROUP}
 
