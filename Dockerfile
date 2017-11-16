@@ -1,27 +1,75 @@
-FROM stpork/bamboo-centos-base
+FROM openjdk:8-jdk-alpine
 
 MAINTAINER stpork from Mordor team
 
-ENV BAMBOO_VERSION=6.2.2 \
+ENV OCP_VERSION=v3.6.1 \
+OCP_BUILD=008f2d5 \
+CLI_VERSION=7.1.0 \
+CLI_BUILD=16285777 \
+GRADLE_VERSION=4.3 \
+MAVEN_VERSION=3.5.2 \
+BAMBOO_VERSION=6.2.2 \
 BAMBOO_INSTALL=/opt/atlassian/bamboo \
-BAMBOO_HOME=/var/atlassian/application-data/bamboo
+BAMBOO_HOME=/var/atlassian/application-data/bamboo \
+RUN_USER=daemon \
+RUN_GROUP=daemon \
+BAMBOO_HOME=/var/atlassian/application-data/bamboo \
+MAVEN_HOME=/usr/local/maven \
+GRADLE_HOME=/usr/local/gradle
+
+ENV HOME=$BAMBOO_HOME/home \
+M2_HOME=$MAVEN_HOME \
+PATH=$MAVEN_HOME/bin:$GRADLE_HOME/bin:$PATH 
+
+ENV _JAVA_OPTIONS=-Duser.home=$HOME
 
 LABEL io.k8s.description="Atlassian Bamboo"
 LABEL io.k8s.display-name="Bamboo ${BAMBOO_VERSION}"
 LABEL io.openshift.expose-services="8085:http, 54663:tcp"
 
-USER root
-
-RUN BAMBOO_URL=http://www.atlassian.com/software/bamboo/downloads/binary/atlassian-bamboo-${BAMBOO_VERSION}.tar.gz \
-&& M2_URL=https://bitbucket.org/stpork/bamboo-agent/downloads/settings.xml \
+RUN set -x \
+&& apk update -qq \
+&& update-ca-certificates \
+&& apk add --no-cache ca-certificates curl git openssh bash procps openssl perl ttf-dejavu tini nano \
+&& rm -rf /var/lib/{apt,dpkg,cache,log}/ /tmp/* /var/tmp/* \
 && mkdir -p ${BAMBOO_INSTALL} \
 && mkdir -p ${BAMBOO_HOME} \
-&& curl -fsSL ${BAMBOO_URL} | tar -xz --strip-components=1 -C "$BAMBOO_INSTALL" \
+&& mkdir -p ${MAVEN_HOME} \
+&& curl -fsSL \
+"http://www.nic.funet.fi/pub/mirrors/apache.org/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz" \
+| tar -xz --strip-components=1 -C ${MAVEN_HOME} \
+&& mkdir -p ${HOME}/.m2 \
+&& curl -fsSL ${XML_URL} \
+"https://bitbucket.org/stpork/bamboo-agent/downloads/settings.xml" \
+-o ${HOME}/.m2/settings.xml \
+&& USR_LOCAL_BIN=/usr/local/bin \
+&& curl -fsSL \
+"http://github.com/openshift/origin/releases/download/${OCP_VERSION}/openshift-origin-client-tools-${OCP_VERSION}-${OCP_BUILD}-linux-64bit.tar.gz" \
+| tar -xz --strip-components=1 -C ${USR_LOCAL_BIN} \
+&& cd ${BAMBOO_INSTALL} \
+&& curl -fsSL \
+"http://bobswift.atlassian.net/wiki/download/attachments/${CLI_BUILD}/atlassian-cli-${CLI_VERSION}-distribution.zip" \
+-o atlassian-cli.zip \
+&& unzip -q atlassian-cli.zip \
+&& mv atlassian-cli-${CLI_VERSION}/* ${USR_LOCAL_BIN} \
+&& rm -rf atlassian-cli* \
+&& curl -fsSL ${GRADLE_URL} \
+"https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip" \
+-o gradle.zip \
+&& mkdir -p $GRADLE_HOME \
+&& unzip -q gradle.zip \
+&& mv gradle-${GRADLE_VERSION}/* ${GRADLE_HOME} \
+&& rm -rf gradle* \
+&& curl -fsSL \
+"http://www.atlassian.com/software/bamboo/downloads/binary/atlassian-bamboo-${BAMBOO_VERSION}.tar.gz" \
+| tar -xz --strip-components=1 -C ${BAMBOO_INSTALL} \
 && echo -e "\nbamboo.home=$BAMBOO_HOME" >> "${BAMBOO_INSTALL}/atlassian-bamboo/WEB-INF/classes/bamboo-init.properties" \
 && chown -R ${RUN_USER}:${RUN_GROUP} ${BAMBOO_INSTALL} \
 && chmod -R 777 ${BAMBOO_INSTALL} \
 && chown -R ${RUN_USER}:${RUN_GROUP} ${BAMBOO_HOME} \
-&& chmod -R 777 ${BAMBOO_HOME}
+&& chmod -R 777 ${BAMBOO_HOME} \
+&& chown -R ${RUN_USER}:${RUN_GROUP} ${USR_LOCAL_BIN} \
+&& chmod -R 777 ${USR_LOCAL_BIN}
 
 USER ${RUN_USER}:${RUN_GROUP}
 
@@ -35,4 +83,4 @@ WORKDIR ${BAMBOO_HOME}
 COPY entrypoint.sh /entrypoint.sh
 
 CMD ["/entrypoint.sh", "-fg"]
-ENTRYPOINT ["/usr/bin/tini", "--"]
+ENTRYPOINT ["/sbin/tini", "--"]
