@@ -21,9 +21,9 @@ CATALINA_OPTS="${CATALINA_OPTS} -DcatalinaConnectorProxyPort=${CATALINA_CONNECTO
 CATALINA_OPTS="${CATALINA_OPTS} -DcatalinaConnectorScheme=${CATALINA_CONNECTOR_SCHEME}"
 CATALINA_OPTS="${CATALINA_OPTS} -DcatalinaConnectorSecure=${CATALINA_CONNECTOR_SECURE}"
 
-JAVA_OPTS="${JAVA_OPTS} ${CATALINA_OPTS}"
+JAVA_OPTS="-Dbamboo.fs.timestamp.precision=1000 ${JAVA_OPTS} ${CATALINA_OPTS}"
 
-ARGS="-Dbamboo.fs.timestamp.precision=1000 $@"
+ARGS="$@"
 
 # Start Bamboo as the correct user.
 if [ "${UID}" -eq 0 ]; then
