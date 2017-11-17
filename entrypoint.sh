@@ -23,7 +23,7 @@ CATALINA_OPTS="${CATALINA_OPTS} -DcatalinaConnectorSecure=${CATALINA_CONNECTOR_S
 
 JAVA_OPTS="${JAVA_OPTS} ${CATALINA_OPTS}"
 
-ARGS="$@"
+ARGS="-Dbamboo.fs.timestamp.precision=1000 $@"
 
 # Start Bamboo as the correct user.
 if [ "${UID}" -eq 0 ]; then
