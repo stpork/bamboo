@@ -21,7 +21,7 @@ ENV HOME=$BAMBOO_HOME/home \
 M2_HOME=$MAVEN_HOME \
 PATH=$MAVEN_HOME/bin:$GRADLE_HOME/bin:$PATH 
 
-ENV _JAVA_OPTIONS=-Duser.home=$HOME
+ENV _JAVA_OPTIONS=-Dbamboo.fs.timestamp.precision=1000 -Duser.home=$HOME
 
 LABEL io.k8s.description="Atlassian Bamboo"
 LABEL io.k8s.display-name="Bamboo ${BAMBOO_VERSION}"
