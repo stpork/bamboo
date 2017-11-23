@@ -4,11 +4,11 @@ MAINTAINER stpork from Mordor team
 
 ENV OCP_VERSION=v3.6.1 \
 OCP_BUILD=008f2d5 \
-CLI_VERSION=7.1.0 \
+CLI_VERSION=7.2.0 \
 CLI_BUILD=16285777 \
 GRADLE_VERSION=4.3 \
 MAVEN_VERSION=3.5.2 \
-BAMBOO_VERSION=6.2.2 \
+BAMBOO_VERSION=6.2.3 \
 BAMBOO_INSTALL=/opt/atlassian/bamboo \
 BAMBOO_HOME=/var/atlassian/application-data/bamboo \
 RUN_USER=daemon \
@@ -21,7 +21,7 @@ ENV HOME=$BAMBOO_HOME/home \
 M2_HOME=$MAVEN_HOME \
 PATH=$MAVEN_HOME/bin:$GRADLE_HOME/bin:$PATH 
 
-ENV _JAVA_OPTIONS=-Duser.home=$HOME
+ENV JAVA_TOOL_OPTIONS="-Duser.home=${HOME} -Dbamboo.fs.timestamp.precision=1000"
 
 LABEL io.k8s.description="Atlassian Bamboo"
 LABEL io.k8s.display-name="Bamboo ${BAMBOO_VERSION}"
