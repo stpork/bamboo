@@ -64,12 +64,13 @@ RUN set -x \
 "http://www.atlassian.com/software/bamboo/downloads/binary/atlassian-bamboo-${BAMBOO_VERSION}.tar.gz" \
 | tar -xz --strip-components=1 -C ${BAMBOO_INSTALL} \
 && echo -e "\nbamboo.home=$BAMBOO_HOME" >> "${BAMBOO_INSTALL}/atlassian-bamboo/WEB-INF/classes/bamboo-init.properties" \
+&& mkdir /lib64 \
+&& ln -s /lib/ld-musl-x86_64.so.1 /lib64/ld-linux-x86-64.so.2 \
 && chown -R ${RUN_USER}:${RUN_GROUP} ${BAMBOO_INSTALL} \
-&& chmod -R 777 ${BAMBOO_INSTALL} \
+&& chmod -R 755 ${BAMBOO_INSTALL} \
 && chown -R ${RUN_USER}:${RUN_GROUP} ${BAMBOO_HOME} \
 && chmod -R 777 ${BAMBOO_HOME} \
-&& chown -R ${RUN_USER}:${RUN_GROUP} ${USR_LOCAL_BIN} \
-&& chmod -R 777 ${USR_LOCAL_BIN}
+&& chmod -R 755 ${USR_LOCAL_BIN}
 
 USER ${RUN_USER}:${RUN_GROUP}
 
