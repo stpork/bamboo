@@ -31,7 +31,7 @@ RUN set -x \
 && apk update -qq \
 && update-ca-certificates \
 && apk add --no-cache ca-certificates curl git openssh bash procps openssl perl ttf-dejavu tini nano \
-&& rm -rf /var/lib/{apt,dpkg,cache,log}/ /tmp/* /var/tmp/* \
+&& rm -rf /var/cache/apk/* /var/lib/{apt,dpkg,cache,log}/ /tmp/* /var/tmp/* \
 && mkdir -p ${BAMBOO_INSTALL} \
 && mkdir -p ${BAMBOO_HOME} \
 && mkdir -p ${MAVEN_HOME} \
