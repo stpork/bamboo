@@ -63,6 +63,10 @@ RUN set -x \
 && curl -fsSL \
 "http://www.atlassian.com/software/bamboo/downloads/binary/atlassian-bamboo-${BAMBOO_VERSION}.tar.gz" \
 | tar -xz --strip-components=1 -C ${BAMBOO_INSTALL} \
+&& JMETER_PLUGIN=atlassian-bamboo-jmeter-aggregator-5.14.0.jar \
+&& curl -fsSL \
+"https://marketplace-cdn.atlassian.com/files/artifact/c89b23ee-76d4-4237-b637-24692f8fb694/${JMETER_PLUGIN}" \
+-o ${BAMBOO_INSTALL}/atlassian-bamboo/WEB-INF/lib/${JMETER_PLUGIN} \
 && echo -e "\nbamboo.home=$BAMBOO_HOME" >> "${BAMBOO_INSTALL}/atlassian-bamboo/WEB-INF/classes/bamboo-init.properties" \
 && mkdir /lib64 \
 && ln -s /lib/ld-musl-x86_64.so.1 /lib64/ld-linux-x86-64.so.2 \
