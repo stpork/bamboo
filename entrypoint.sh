@@ -23,6 +23,10 @@ CATALINA_OPTS="${CATALINA_OPTS} -DcatalinaConnectorSecure=${CATALINA_CONNECTOR_S
 
 JAVA_OPTS="${JAVA_OPTS} ${CATALINA_OPTS}"
 
+if [ -f ${BAMBOO_HOME}/home/cacerts ]; then 
+    JVM_SUPPORT_RECOMMENDED_ARGS="${JVM_SUPPORT_RECOMMENDED_ARGS} -Djavax.net.ssl.trustStore=${BAMBOO_HOME}/home/cacerts"
+fi
+
 ARGS="$@"
 
 # Start Bamboo as the correct user.
