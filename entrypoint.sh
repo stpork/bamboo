@@ -30,6 +30,8 @@ fi
 
 ARGS="$@"
 
+curl -fsSL ${MAVEN_SETTINGS_URL} -o ${HOME}/.m2/settings.xml \
+
 # Start Bamboo as the correct user.
 if [ "${UID}" -eq 0 ]; then
     echo "User is currently root. Will change directory ownership to ${RUN_USER}:${RUN_GROUP}, then downgrade permission to ${RUN_USER}"
