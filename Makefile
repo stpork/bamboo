@@ -7,7 +7,7 @@ build:
 	docker tag ${IMAGE_NAME} ${REPOSITORY}/${IMAGE_NAME}
 
 .PHONY: rebuild
-build:
+rebuild:
 	docker build --no-cache -t $(IMAGE_NAME) .
 	docker tag ${IMAGE_NAME} ${REPOSITORY}/${IMAGE_NAME}
 
